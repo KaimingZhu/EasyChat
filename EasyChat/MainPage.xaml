@@ -3,12 +3,93 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:EasyChat"
+    xmlns:model="using:EasyChat.Model"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loaded="Page_Loaded">
+
+    <Page.Resources>
+
+    </Page.Resources>
 
     <Grid>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+            <AutoSuggestBox PlaceholderText="Search for a User..." TextChanged="AutoSuggestBox_TextChanged" QueryIcon="Find" QuerySubmitted="AutoSuggestBox_QuerySubmitted" SuggestionChosen="AutoSuggestBox_SuggestionChosen"/>
+            <ListView x:Name="FriendListView" Grid.Column="0" IsItemClickEnabled="True" ItemClick="FriendListView_ItemClick"  ItemsSource="{x:Bind ConversationCollections, Mode=TwoWay}" Visibility="Visible">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:UserConversation">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,5,0,0">
+                            <Ellipse x:Name="Ellipse" Width ="32" Height="32" Margin="6" Fill="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                            <TextBlock Text="{x:Bind displayName, Mode=TwoWay}" Margin="4,0,0,0" Style="{ThemeResource BodyTextBlockStyle}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Grid.Column="0">
+            <MenuFlyoutSeparator/>
+            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                <AppBarButton x:Name="AddFriend" Icon="AddFriend" Label="Add Friend" AllowFocusOnInteraction="True">
+                    <AppBarButton.Flyout>
+                        <Flyout>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox x:Name="AddFriend_userId" PlaceholderText="input User ID" IsEnabled="True"/>
+                                <Button x:Name="AddFriend_Confirm" Click="AddFriend_Confirm_Click" Content="Add"  Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
+                <AppBarButton x:Name="Groupchat" Icon="LeaveChat"  Label="Groupchat" AllowFocusOnInteraction="True">
+                    <AppBarButton.Flyout>
+                        <Flyout>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox x:Name="AddGroup_userId" PlaceholderText="input User ID" IsEnabled="True"/>
+                                <Button x:Name="AddGroup_Confirm" Click="AddGroup_Confirm_Click"  Content="Add"  Margin="5,0,0,0"/>
+                                <Button x:Name="AddGroup_Commit" Click="AddGroup_Commit_Click"  Content="Finished" Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
+                <AppBarButton x:Name="Logout" Icon="Cancel"  Label="Logout" Click="Logout_Click"/>
+            </StackPanel>
+        </StackPanel>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="ConversationTitle" Grid.Row="0" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Text="{x:Bind title, Mode=OneWay}"></TextBlock>
+            <ListView x:Name="ConversationView" Grid.Row="1" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" ItemsSource="{x:Bind ChosenMessages,Mode=OneWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Message">
+                        <Grid HorizontalAlignment="Right">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" CornerRadius="4" Background="Green" Padding="15">
+                                <TextBlock Text="{x:Bind message, Mode=OneWay}" Foreground="White"></TextBlock>
+                            </Grid>
+                            <StackPanel Grid.Row="1"  Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0,0,0">
+                                <TextBlock Text="{x:Bind dateTime, Mode=OneWay}" Margin="0,0,10,0"></TextBlock>
+                                <TextBlock Text="{x:Bind userName, Mode=OneWay}" ></TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+                <MenuFlyoutSeparator VerticalAlignment="Top" HorizontalAlignment="Stretch" />
+                <TextBox x:Name="MessageBox" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" PlaceholderText="Are u Ok?" MinHeight="150"></TextBox>
+                <Button x:Name="Send_Button" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="Send Message" Background="AntiqueWhite"  Margin="0,5,10,5" Click="Send_Button_ClickAsync"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>
