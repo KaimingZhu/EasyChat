@@ -1,0 +1,12 @@
+# EasyChat
+- 该项目为SYSU分布式2019 : 分布式聊天系统的实现。包括以下功能 :
+  - 登录，注册
+  - 信息发送
+  - 添加好友
+  - 信息读取
+  - 服务器一定的失效容错机制
+- 开发环境 :
+  - 服务器端( `server` 文件夹) : python
+  - 客户端( `EasyChat` 文件夹) : UWP(C#)
+- Developed By : ZhangTuo, ZhuKaiMing, LinKangYing.
+- 学生项目，代码仅供参考，十分感谢 :)
