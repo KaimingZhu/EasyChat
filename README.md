@@ -5,7 +5,7 @@
   - 添加好友
   - 信息读取
   - 服务器一定的失效容错机制
-- 开发环境 :
+- 项目构成及开发环境 :
   - 服务器端( `server` 文件夹) : python
   - 客户端( `EasyChat` 文件夹) : UWP(C#)
 - Developed By : ZhangTuo, ZhuKaiMing, LinKangYing.
